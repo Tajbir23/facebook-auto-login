@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Scraper Dashboard</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:600,700|Roboto:400,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard">
+        <div class="logo-circle">
+            <!-- Facebook SVG Icon -->
+            <svg viewBox="0 0 32 32" fill="none">
+                <circle cx="16" cy="16" r="16" fill="#fff"/>
+                <path d="M21.5 16.5h-3v9h-4v-9h-2v-3h2v-2c0-2.2 1.3-3.5 3.5-3.5h3v3h-2c-0.6 0-1 .4-1 1v1.5h3l-0.5 3z" fill="#2980b9"/>
+            </svg>
+        </div>
+        <h1>Facebook Scraper</h1>
+        <div class="subtitle">Upload your credentials and optional proxy list to begin scraping Facebook data securely.</div>
+        <form action="/scrape" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="credentials">Credentials File</label>
+                <input type="file" id="credentials" name="credentials" accept=".xlsx,.xls,.csv" required>
+                <div class="note">Accepted: .xlsx, .xls, .csv</div>
+            </div>
+            <div class="form-group">
+                <label for="data">Proxy List (Optional)</label>
+                <textarea name="data" id="data" cols="30" rows="6" placeholder="Enter proxies, one per line"></textarea>
+                <div class="note">One proxy per line. Leave blank to use your current IP.</div>
+            </div>
+            <button type="submit">Start Scraping</button>
+        </form>
+    </div>
+</body>
+</html>
