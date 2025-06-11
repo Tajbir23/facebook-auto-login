@@ -40,11 +40,11 @@ app.listen(3000, () => {
       console.log(stdout)
     }
   })
-  switch (process.platform) {
-    case "win32":
-      exec(`start ${url}`)
-      break
-    default:
-      exec(`open ${url}`)
-  }
+  // switch (process.platform) {
+  //   case "win32":
+  //     exec(`start ${url}`)
+  //     break
+  //   default:
+  //     exec(`open ${url}`)
+  // }
 });

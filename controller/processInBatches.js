@@ -11,7 +11,7 @@ const processInBatches = async (data, batchSize, scrap, successDataMap, errorDat
             const proxy = await getAproxy()
             console.log(item.user, item.password, proxy)
 
-            return await scrap(item.user, item.password, proxy)
+            return await scrap(item.user, item.password, item.code_2fa, proxy)
         }));
 
         batch.forEach((item, idx) => {
