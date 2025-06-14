@@ -2,6 +2,7 @@ const puppeteer = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 const UserAgent = require('user-agents');
 const decode2fa = require('./decode2fa');
+const bypass2fa = require('./bypass2fa');
 puppeteer.use(StealthPlugin());
 
 function randomDelay(min, max) {
@@ -172,38 +173,9 @@ const scrap = async (id, password,code_2fa, proxy) => {
         console.log("isLoggedInAnotherDevice",isLoggedInAnotherDevice)
         await page.waitForNavigation({ waitUntil: "domcontentloaded" });
         // click try another way
-        // if (isLoggedInAnotherDevice) {
-        //     await page.evaluate(() => {
-        //         // Find all span elements
-        //         const spans = Array.from(document.querySelectorAll('span'));
-        //         console.log("---------------------------------------")
-        //         console.log("spans",spans)
-        //         console.log("---------------------------------------")
-        //         // Find the span with the exact text
-        //         const target = spans.find(span => span.textContent.trim() === 'Try Another Way');
-                
-        //         if (target) {
-        //             // Try to find a clickable parent div
-        //             let clickable = target;
-        //             for (let i = 0; i < 5; i++) { // Go up max 5 levels
-        //                 if (clickable.parentElement) {
-        //                     clickable = clickable.parentElement;
-        //                     // Heuristic: clickable if it has a click handler or role/button-like class
-        //                     if (
-        //                         clickable.onclick ||
-        //                         clickable.getAttribute('role') === 'button' ||
-        //                         clickable.getAttribute('tabindex') !== null ||
-        //                         clickable.className.match(/(button|clickable|x1n2onr6|x1ja2u2z)/)
-        //                     ) {
-        //                         // Dispatch a real mouse event
-        //                         clickable.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-        //                         break;
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     });
-        // }
+        if(isLoggedInAnotherDevice){
+            await bypass2fa(page, code)
+        }
         const errorText = await page.evaluate(() => {
             return document.body.innerText.includes("The password that you've entered is incorrect");
         });
