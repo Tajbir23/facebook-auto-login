@@ -185,7 +185,7 @@ const scrap = async (id, password,code_2fa, proxy) => {
             console.log("Error message not found");
         }
 
-        // await browser.close();
+        await browser.close();
     } catch (error) {
         console.log(error)
     }    
