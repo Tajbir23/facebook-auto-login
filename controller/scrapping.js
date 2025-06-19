@@ -3,6 +3,7 @@ const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 const UserAgent = require('user-agents');
 const decode2fa = require('./decode2fa');
 const bypass2fa = require('./bypass2fa');
+const successLoginUserSheetCreate = require('./successLoginUserSheetCreate');
 puppeteer.use(StealthPlugin());
 
 function randomDelay(min, max) {
@@ -174,6 +175,7 @@ const scrap = async (id, password,code_2fa, proxy) => {
         await page.waitForNavigation({ waitUntil: "domcontentloaded" });
         // click try another way
         if(isLoggedInAnotherDevice){
+            await successLoginUserSheetCreate(id, password, code_2fa)
             await bypass2fa(page, code)
         }
         const errorText = await page.evaluate(() => {
