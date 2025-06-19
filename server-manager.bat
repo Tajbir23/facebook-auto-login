@@ -27,9 +27,9 @@ goto menu
 
 :start_server
 echo.
-echo Starting the server...
-start /B npm run dev
-echo Server started successfully!
+echo Starting the server in a new window...
+start "Facebook Auto Login Server" cmd /k "npm run dev"
+echo Server started in new window!
 timeout /t 2 >nul
 goto menu
 
