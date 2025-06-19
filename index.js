@@ -26,7 +26,7 @@ app.post("/scrape", upload.single("credentials"), async(req, res) => {
     const data = await readExcelFile(req.file?.path)
     await deleteProxyFile()
     await createProxyFile("proxy.txt", req.body.data)
-    await processInBatches(data, 10, scrap, successDataMap, errorDataMap)
+    await processInBatches(data, 4, scrap, successDataMap, errorDataMap)
     res.json({successDataMap, errorDataMap})
 })
 app.listen(3000, () => {
