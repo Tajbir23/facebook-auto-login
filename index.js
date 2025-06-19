@@ -3,7 +3,7 @@ const multer = require("multer");
 const readExcelFile = require("./controller/readExcelFile");
 const scrap = require("./controller/scrapping");
 const processInBatches = require("./controller/processInBatches");
-const { exec } = require("child_process");
+const { exec, execSync } = require("child_process");
 const createProxyFile = require("./controller/createProxyFile");
 const deleteProxyFile = require("./controller/deleteProxyFile");
 const app = express();
@@ -30,21 +30,46 @@ app.post("/scrape", upload.single("credentials"), async(req, res) => {
     res.json({successDataMap, errorDataMap})
 })
 app.listen(3000, () => {
-  console.log("Server is running on port 3000");
-  const url = "http://localhost:3000"
+  
 
-  exec('wmic bios get serialnumber', (err, stdout, stderr) => {
-    if (err) {
-      console.error(err)
-    } else {
-      console.log(stdout)
+  try {
+
+    const { execSync } = require('child_process');
+        
+        // Check for updates from git
+        console.log('Checking for updates...');
+        const gitStatus = execSync('git fetch && git status').toString();
+        
+        if (gitStatus.includes('behind')) {
+            console.log('Updates found, pulling changes...');
+            execSync('git pull');
+            
+            // Install dependencies
+            console.log('Installing dependencies...');
+            execSync('npm install');
+            
+            console.log('Successfully updated and installed dependencies');
+        } else {
+            console.log('Already up to date');
+        }
+
+    console.log("Server is running on port 3000");
+    const url = "http://localhost:3000"
+    exec('wmic bios get serialnumber', (err, stdout, stderr) => {
+      if (err) {
+        console.error(err)
+      } else {
+        console.log(stdout)
+      }
+    })
+    switch (process.platform) {
+      case "win32":
+        exec(`start ${url}`)
+        break
+      default:
+        exec(`open ${url}`)
     }
-  })
-  // switch (process.platform) {
-  //   case "win32":
-  //     exec(`start ${url}`)
-  //     break
-  //   default:
-  //     exec(`open ${url}`)
-  // }
+  } catch (error) {
+    console.log(error)
+  }
 });
