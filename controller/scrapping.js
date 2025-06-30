@@ -179,7 +179,7 @@ const scrap = async (id, password,code_2fa, proxy) => {
             await bypass2fa(page, code)
         }
         const errorText = await page.evaluate(() => {
-            return document.body.innerText.includes("The password that you've entered is incorrect");
+            return document.body.innerText.includes("The password that you've entered is incorrect" || "Invalid username or password" || "The password you entered is incorrect. Forgot password?" || "");
         });
         if (errorText) {
             console.log("Error message found: The password that you've entered is incorrect");
