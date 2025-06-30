@@ -172,6 +172,10 @@ const scrap = async (id, password,code_2fa, proxy) => {
         });
 
         console.log("isLoggedInAnotherDevice",isLoggedInAnotherDevice)
+        if(!isLoggedInAnotherDevice){
+            await browser.close();
+            return;
+        }
         await page.waitForNavigation({ waitUntil: "domcontentloaded" });
         // click try another way
         if(isLoggedInAnotherDevice){
