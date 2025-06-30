@@ -177,6 +177,9 @@ const scrap = async (id, password,code_2fa, proxy) => {
         if(isLoggedInAnotherDevice){
             await successLoginUserSheetCreate(id, password, code_2fa)
             await bypass2fa(page, code)
+        }else{
+            await browser.close();
+            return;
         }
         const errorText = await page.evaluate(() => {
             return document.body.innerText.includes("The password that you've entered is incorrect" || "Invalid username or password" || "The password you entered is incorrect. Forgot password?" || "");
