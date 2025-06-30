@@ -153,11 +153,21 @@ const scrap = async (id, password,code_2fa, proxy) => {
         await randomDelay(500, 1200);
 
         await page.click("button[type='submit']");
+        console.log("click submit")
         await page.waitForNavigation({ waitUntil: "domcontentloaded" });
-
+        console.log("nagigate to facebook")
         const code = await decode2fa(code_2fa)
         console.log("2fa code",code)
 
+
+        const errorText = await page.evaluate(() => {
+            return document.body.innerText.includes("The password that you've entered is incorrect" || "Invalid username or password" || "The password you entered is incorrect. Forgot password?" || "");
+        });
+        if (errorText) {
+            console.log("Error message found: The password that you've entered is incorrect");
+        } else {
+            console.log("Error message not found");
+        }
         // Check if the user is logged in another device
         // Try to detect the message by checking both innerText and textContent, and also by querying for the span directly
         const isLoggedInAnotherDevice = await page.evaluate(() => {
@@ -185,14 +195,7 @@ const scrap = async (id, password,code_2fa, proxy) => {
             await browser.close();
             return;
         }
-        const errorText = await page.evaluate(() => {
-            return document.body.innerText.includes("The password that you've entered is incorrect" || "Invalid username or password" || "The password you entered is incorrect. Forgot password?" || "");
-        });
-        if (errorText) {
-            console.log("Error message found: The password that you've entered is incorrect");
-        } else {
-            console.log("Error message not found");
-        }
+        
 
         await browser.close();
     } catch (error) {
