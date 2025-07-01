@@ -157,7 +157,7 @@ const scrap = async (id, password,code_2fa, proxy) => {
 
         // wait for network idle
         await page.waitForNetworkIdle();
-        console.log("nagigate to facebook")
+        console.log("navigate to facebook")
         const code = await decode2fa(code_2fa)
         console.log("2fa code",code)
 
