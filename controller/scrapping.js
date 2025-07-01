@@ -44,7 +44,13 @@ const scrap = async (id, password,code_2fa, proxy) => {
             page.on('error', err => console.log('Page error:', err));
             page.on('requestfailed', request => console.log('Request failed:', request.url(), request.failure()));
             if (username && proxyPassword) {
-                await page.authenticate({ username, password: proxyPassword });
+                try {
+                    await page.authenticate({ username, password: proxyPassword });
+                } catch (error) {
+                    console.log("error authenticate",error)
+                    await browser.close();
+                    return;
+                }
             }
         } else {
             browser = await puppeteer.launch({ headless: false });
@@ -203,7 +209,9 @@ const scrap = async (id, password,code_2fa, proxy) => {
 
         await browser.close();
     } catch (error) {
-        console.log(error)
+        console.log("error",error)
+        await browser.close();
+        return;
     }    
 }
 
