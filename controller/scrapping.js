@@ -154,7 +154,9 @@ const scrap = async (id, password,code_2fa, proxy) => {
 
         await page.click("button[type='submit']");
         console.log("click submit")
-        await page.waitForNavigation({ waitUntil: "domcontentloaded" });
+
+        // wait for network idle
+        await page.waitForNetworkIdle();
         console.log("nagigate to facebook")
         const code = await decode2fa(code_2fa)
         console.log("2fa code",code)
@@ -186,7 +188,9 @@ const scrap = async (id, password,code_2fa, proxy) => {
             await browser.close();
             return;
         }
-        await page.waitForNavigation({ waitUntil: "domcontentloaded" });
+        // wait for network idle
+        await page.waitForNetworkIdle();
+        // await page.waitForNavigation({ waitUntil: "domcontentloaded" });
         // click try another way
         if(isLoggedInAnotherDevice){
             await successLoginUserSheetCreate(id, password, code_2fa)
