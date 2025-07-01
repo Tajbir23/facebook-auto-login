@@ -46,7 +46,7 @@ const scrap = async (id, password, code_2fa, proxy) => {
                     '--disable-dev-shm-usage',
                     '--disable-web-security',
                     '--disable-features=IsolateOrigins,site-per-process',
-                    `--proxy-server=socks5://${host}:${port}`
+                    `--proxy-server=${host}:${port}`
                 ]
             });
             
